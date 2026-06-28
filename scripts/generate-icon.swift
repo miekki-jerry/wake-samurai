@@ -5,8 +5,8 @@ import Foundation
 
 let root = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 let sourceURL = root.appendingPathComponent("Resources/AppIconSource.png")
-let iconsetURL = root.appendingPathComponent("Resources/WakeSamurai.iconset", isDirectory: true)
-let icnsURL = root.appendingPathComponent("Resources/WakeSamurai.icns")
+let iconsetURL = root.appendingPathComponent("Resources/WakeUpSamurai.iconset", isDirectory: true)
+let icnsURL = root.appendingPathComponent("Resources/WakeUpSamurai.icns")
 
 guard let sourceImage = NSImage(contentsOf: sourceURL) else {
     fatalError("Missing icon source at \(sourceURL.path)")

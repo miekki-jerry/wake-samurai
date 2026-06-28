@@ -26,7 +26,7 @@ final class SleepAssertionController {
 
         isActive = result == kIOReturnSuccess
         if !isActive {
-            NSLog("WakeSamurai sleep assertion failed with IOReturn \(result)")
+            NSLog("WakeUpSamurai sleep assertion failed with IOReturn \(result)")
         }
     }
 

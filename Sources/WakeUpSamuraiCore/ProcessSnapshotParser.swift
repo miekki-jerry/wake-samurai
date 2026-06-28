@@ -5,7 +5,7 @@ public enum ProcessSnapshotParser {
         output
             .split(separator: "\n", omittingEmptySubsequences: true)
             .compactMap { parseLine(String($0), currentProcessID: currentProcessID) }
-            .filter { !isWakeSamuraiProcess($0) }
+            .filter { !isWakeUpSamuraiProcess($0) }
     }
 
     private static func parseLine(_ line: String, currentProcessID: Int32) -> DetectedAgent? {
@@ -165,8 +165,10 @@ public enum ProcessSnapshotParser {
         URL(fileURLWithPath: command).lastPathComponent
     }
 
-    private static func isWakeSamuraiProcess(_ agent: DetectedAgent) -> Bool {
+    private static func isWakeUpSamuraiProcess(_ agent: DetectedAgent) -> Bool {
         let searchable = "\(agent.command) \(agent.arguments)".lowercased()
-        return searchable.contains("wakesamurai") || searchable.contains("wake samurai")
+        return searchable.contains("wakeupsamurai")
+            || searchable.contains("wakeup samurai")
+            || searchable.contains("wake samurai")
     }
 }

@@ -3,7 +3,7 @@ import Combine
 import SwiftUI
 
 @main
-enum WakeSamuraiMain {
+enum WakeUpSamuraiMain {
     @MainActor
     private static var retainedModel: AppModel?
     @MainActor

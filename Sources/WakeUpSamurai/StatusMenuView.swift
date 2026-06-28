@@ -1,5 +1,5 @@
 import AppKit
-import WakeSamuraiCore
+import WakeUpSamuraiCore
 import SwiftUI
 
 struct StatusMenuView: View {
@@ -70,7 +70,7 @@ struct StatusMenuView: View {
                     .frame(width: 24, height: 24)
             }
             .buttonStyle(.plain)
-            .help("Quit Wake Samurai")
+            .help("Quit WakeUp Samurai")
             .keyboardShortcut("q")
         }
         .padding(.bottom, 16)
@@ -79,7 +79,7 @@ struct StatusMenuView: View {
     private var controls: some View {
         VStack(alignment: .leading, spacing: 10) {
             Toggle("Keep Mac awake while agents run", isOn: $model.isProtectionEnabled)
-            Toggle("Open Wake Samurai at login", isOn: $model.startsAtLogin)
+            Toggle("Open WakeUp Samurai at login", isOn: $model.startsAtLogin)
         }
         .toggleStyle(CyberCheckboxStyle())
         .font(.system(size: 13, weight: .medium, design: .monospaced))

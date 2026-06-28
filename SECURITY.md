@@ -1,6 +1,6 @@
 # Security Policy
 
-Wake Samurai is intentionally small:
+WakeUp Samurai is intentionally small:
 
 - No network access is required.
 - No admin privileges are required.

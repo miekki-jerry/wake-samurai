@@ -15,7 +15,7 @@ enum LoginItemController {
                     try SMAppService.mainApp.unregister()
                 }
             } catch {
-                NSLog("WakeSamurai login item update failed: \(error.localizedDescription)")
+                NSLog("WakeUpSamurai login item update failed: \(error.localizedDescription)")
             }
         }
     }

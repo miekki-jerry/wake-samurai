@@ -1,4 +1,4 @@
-import WakeSamuraiCore
+import WakeUpSamuraiCore
 import Combine
 import Foundation
 
@@ -51,14 +51,14 @@ final class AppModel: ObservableObject {
             lastUpdated = Date()
             updateSleepAssertion()
         } catch {
-            NSLog("WakeSamurai detection failed: \(error.localizedDescription)")
+            NSLog("WakeUpSamurai detection failed: \(error.localizedDescription)")
         }
     }
 
     private func updateSleepAssertion() {
         sleepAssertion.setActive(
             isProtectionEnabled && !detectedAgents.isEmpty,
-            reason: "Wake Samurai detected an active AI coding agent."
+            reason: "WakeUp Samurai detected an active AI coding agent."
         )
     }
 }

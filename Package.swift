@@ -3,26 +3,26 @@
 import PackageDescription
 
 let package = Package(
-    name: "WakeSamurai",
+    name: "WakeUpSamurai",
     platforms: [
         .macOS(.v13)
     ],
     products: [
-        .executable(name: "WakeSamurai", targets: ["WakeSamurai"]),
-        .library(name: "WakeSamuraiCore", targets: ["WakeSamuraiCore"])
+        .executable(name: "WakeUpSamurai", targets: ["WakeUpSamurai"]),
+        .library(name: "WakeUpSamuraiCore", targets: ["WakeUpSamuraiCore"])
     ],
     targets: [
-        .target(name: "WakeSamuraiCore"),
+        .target(name: "WakeUpSamuraiCore"),
         .executableTarget(
-            name: "WakeSamurai",
-            dependencies: ["WakeSamuraiCore"],
+            name: "WakeUpSamurai",
+            dependencies: ["WakeUpSamuraiCore"],
             linkerSettings: [
                 .linkedFramework("IOKit")
             ]
         ),
         .testTarget(
-            name: "WakeSamuraiCoreTests",
-            dependencies: ["WakeSamuraiCore"]
+            name: "WakeUpSamuraiCoreTests",
+            dependencies: ["WakeUpSamuraiCore"]
         )
     ]
 )

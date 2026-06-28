@@ -1,5 +1,5 @@
 import Testing
-@testable import WakeSamuraiCore
+@testable import WakeUpSamuraiCore
 
 @Test func detectsCodexFromCommandArguments() {
     let output = """
@@ -36,9 +36,9 @@ import Testing
     #expect(agents.map { $0.provider } == [.codex, .codex])
 }
 
-@Test func ignoresCurrentProcessAndWakeSamuraiItself() {
+@Test func ignoresCurrentProcessAndWakeUpSamuraiItself() {
     let output = """
-      301 /tmp/WakeSamurai WakeSamurai
+      301 /tmp/WakeUpSamurai WakeUpSamurai
       302 /opt/homebrew/bin/codex codex
     """
 

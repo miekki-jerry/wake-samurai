@@ -1,14 +1,14 @@
-# Wake Samurai
+# WakeUp Samurai
 
-Wake Samurai is a small open-source macOS menu bar app that keeps your Mac awake while AI coding agents are working in the background.
+WakeUp Samurai is a small open-source macOS menu bar app that keeps your Mac awake while AI coding agents are working in the background.
 
 > Wake the f*ck up, Samurai. Your agent is still working.
 
-Wake Samurai watches for supported AI coding provider processes. When one is detected, Wake Samurai creates a macOS idle-sleep assertion. When no supported agent is running, the assertion is released.
+WakeUp Samurai watches for supported AI coding provider processes. When one is detected, WakeUp Samurai creates a macOS idle-sleep assertion. When no supported agent is running, the assertion is released.
 
 ## Why
 
-Long-running coding agents can stop when macOS goes to sleep. Wake Samurai gives you a visible menu bar status and prevents idle sleep only while supported agents are active.
+Long-running coding agents can stop when macOS goes to sleep. WakeUp Samurai gives you a visible menu bar status and prevents idle sleep only while supported agents are active.
 
 ## Features
 
@@ -27,44 +27,44 @@ Long-running coding agents can stop when macOS goes to sleep. Wake Samurai gives
 
 ## Install
 
-Download `WakeSamurai.dmg` from the latest [GitHub Release](https://github.com/miekki-jerry/wake-samurai/releases/latest).
+Download `WakeUpSamurai.dmg` from the latest [GitHub Release](https://github.com/miekki-jerry/wakeup-samurai/releases/latest).
 
 Do not use `Code -> Download ZIP` if you want to install the app. That ZIP is only the source code.
 
-1. Open `WakeSamurai.dmg`.
-2. Drag `Wake Samurai.app` into `Applications`.
-3. Open Wake Samurai from `Applications`.
+1. Open `WakeUpSamurai.dmg`.
+2. Drag `WakeUp Samurai.app` into `Applications`.
+3. Open WakeUp Samurai from `Applications`.
 
 Current public builds are ad hoc signed because the project does not have a Developer ID certificate yet. On first launch, macOS may show:
 
 ```text
-Apple could not verify “Wake Samurai” is free of malware.
+Apple could not verify “WakeUp Samurai” is free of malware.
 ```
 
 For now:
 
 1. Click `Done` in the warning dialog. Do not click `Move to Trash`.
 2. Open `System Settings -> Privacy & Security`.
-3. In the `Security` section, click `Open Anyway` for Wake Samurai.
+3. In the `Security` section, click `Open Anyway` for WakeUp Samurai.
 4. Confirm the second launch prompt.
 
-This is a temporary distribution limitation, not a privacy permission requirement. Wake Samurai does not need Accessibility, Full Disk Access, Screen Recording, or network permissions.
+This is a temporary distribution limitation, not a privacy permission requirement. WakeUp Samurai does not need Accessibility, Full Disk Access, Screen Recording, or network permissions.
 
 After a Developer ID certificate is available, releases should be signed and notarized so this extra step goes away.
 
 ## Build From Source
 
 ```bash
-git clone https://github.com/miekki-jerry/wake-samurai.git
-cd wake-samurai
+git clone https://github.com/miekki-jerry/wakeup-samurai.git
+cd wakeup-samurai
 ./scripts/package.sh
-open dist/Wake\ Samurai.app
+open dist/WakeUp\ Samurai.app
 ```
 
 For a distributable file:
 
 ```bash
-open dist/WakeSamurai.dmg
+open dist/WakeUpSamurai.dmg
 ```
 
 ## Development
@@ -78,7 +78,7 @@ swift test
 Run locally:
 
 ```bash
-swift run WakeSamurai
+swift run WakeUpSamurai
 ```
 
 Build a release app bundle and DMG:
@@ -95,17 +95,17 @@ Regenerate the app icon:
 
 ## Detection Model
 
-Wake Samurai intentionally starts simple. It scans the local process table and matches supported provider names on token boundaries to avoid accidental substring hits.
+WakeUp Samurai scans the local process table and detects supported providers from real app executables, CLI binaries, and known runtime wrappers such as `node`/`npx`/`python`. It intentionally ignores inspector/search shell commands like `zsh`, `rg`, `grep`, `ps`, and `git` so random text in terminal arguments does not create false positives.
 
 Supported providers currently follow the CodexBar provider set:
 
 - Codex, Claude, Cursor, OpenCode, Alibaba, Alibaba Token, Gemini, Antigravity, Droid, Copilot, Devin, z.ai, MiniMax, Kimi, Kimi K2, Kilo, Kiro, Vertex AI, Augment, Amp, Ollama, Synthetic, JetBrains AI, Warp, ElevenLabs, OpenRouter, LiteLLM, Perplexity, Abacus AI, Mistral, DeepSeek, T3 Chat, Codebuff, Poe, Chutes, and Zed.
 
-The scanner ignores Wake Samurai's own process. Future providers should be added in `Sources/WakeSamuraiCore/AgentProvider.swift` with focused tests.
+The scanner ignores WakeUp Samurai's own process. Future providers should be added in `Sources/WakeUpSamuraiCore/AgentProvider.swift` with focused tests.
 
 ## Security
 
-Wake Samurai does not require admin privileges, network access, shell injection, or access to your code. It reads process names and command arguments through `/bin/ps`, then uses macOS power management APIs to prevent idle sleep.
+WakeUp Samurai does not require admin privileges, network access, shell injection, or access to your code. It reads process names and command arguments through `/bin/ps`, then uses macOS power management APIs to prevent idle sleep.
 
 Do not commit signing certificates, provisioning profiles, API keys, or private release credentials to this repository.
 
