@@ -17,6 +17,18 @@ struct StatusMenuView: View {
         return "\(activeAgent.provider.displayName) is coding"
     }
 
+    private var detectedProviders: [AgentProvider] {
+        var seen: Set<AgentProvider> = []
+        return model.detectedAgents.compactMap { agent in
+            guard !seen.contains(agent.provider) else {
+                return nil
+            }
+
+            seen.insert(agent.provider)
+            return agent.provider
+        }
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             statusRow
@@ -82,18 +94,25 @@ struct StatusMenuView: View {
                 .tracking(4)
                 .foregroundStyle(.white.opacity(0.45))
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
-                    ForEach(AgentProvider.allCases, id: \.self) { provider in
-                        AgentChip(
-                            title: provider == .claude ? "Claude Code" : provider.displayName,
-                            isActive: model.detectedAgents.contains { $0.provider == provider }
-                        )
+            if detectedProviders.isEmpty {
+                Text("No active agents")
+                    .font(.system(size: 13, weight: .medium, design: .monospaced))
+                    .foregroundStyle(.white.opacity(0.5))
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 10) {
+                        ForEach(detectedProviders, id: \.self) { provider in
+                            AgentChip(title: chipTitle(for: provider))
+                        }
                     }
                 }
             }
         }
         .padding(.top, 16)
+    }
+
+    private func chipTitle(for provider: AgentProvider) -> String {
+        provider == .claude ? "Claude Code" : provider.displayName
     }
 }
 
@@ -163,27 +182,26 @@ private struct CyberCheckboxStyle: ToggleStyle {
 
 private struct AgentChip: View {
     let title: String
-    let isActive: Bool
 
     var body: some View {
         HStack(spacing: 8) {
             Circle()
-                .fill(isActive ? CyberColor.yellow : Color.white.opacity(0.25))
+                .fill(CyberColor.yellow)
                 .frame(width: 6, height: 6)
 
             Text(title)
                 .font(.system(size: 13, weight: .medium, design: .monospaced))
         }
-        .foregroundStyle(isActive ? CyberColor.yellow : Color.white.opacity(0.5))
+        .foregroundStyle(CyberColor.yellow)
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
         .background(
             RoundedRectangle(cornerRadius: 7, style: .continuous)
-                .fill(isActive ? CyberColor.yellow.opacity(0.08) : Color.white.opacity(0.06))
+                .fill(CyberColor.yellow.opacity(0.08))
         )
         .overlay(
             RoundedRectangle(cornerRadius: 7, style: .continuous)
-                .stroke(isActive ? CyberColor.yellow.opacity(0.55) : Color.white.opacity(0.14), lineWidth: 1)
+                .stroke(CyberColor.yellow.opacity(0.55), lineWidth: 1)
         )
     }
 }
