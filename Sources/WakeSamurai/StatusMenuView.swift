@@ -17,18 +17,6 @@ struct StatusMenuView: View {
         return "\(activeAgent.provider.displayName) is coding"
     }
 
-    private var badgeText: String {
-        if model.isKeepingAwake {
-            return "ACTIVE"
-        }
-
-        if model.detectedAgents.isEmpty {
-            return "IDLE"
-        }
-
-        return "PAUSED"
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             statusRow
@@ -61,26 +49,12 @@ struct StatusMenuView: View {
 
             Spacer()
 
-            Text(badgeText)
-                .font(.system(size: 13, weight: .semibold, design: .monospaced))
-                .foregroundStyle(model.isKeepingAwake ? CyberColor.yellow : .secondary)
-                .padding(.horizontal, 9)
-                .padding(.vertical, 5)
-                .background(
-                    RoundedRectangle(cornerRadius: 5, style: .continuous)
-                        .fill((model.isKeepingAwake ? CyberColor.yellow : Color.secondary).opacity(0.08))
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 5, style: .continuous)
-                        .stroke((model.isKeepingAwake ? CyberColor.yellow : Color.secondary).opacity(0.5), lineWidth: 1)
-                )
-
             Button {
                 NSApplication.shared.terminate(nil)
             } label: {
                 Image(systemName: "power")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(.secondary)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(model.isKeepingAwake ? CyberColor.yellow : .secondary)
                     .frame(width: 24, height: 24)
             }
             .buttonStyle(.plain)
