@@ -26,7 +26,7 @@ Long-running coding agents can stop when macOS goes to sleep. Wake Samurai gives
 ## Install From Source
 
 ```bash
-git clone https://github.com/YOUR_ORG/wake-samurai.git
+git clone https://github.com/miekki-jerry/wake-samurai.git
 cd wake-samurai
 ./scripts/package.sh
 open dist/Wake\ Samurai.app
