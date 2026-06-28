@@ -1,0 +1,7 @@
+.build/
+.swiftpm/
+DerivedData/
+dist/
+*.dmg
+*.xcarchive
+.DS_Store
