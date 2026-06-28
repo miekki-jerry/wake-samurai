@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_NAME="Wake Samurai"
 BINARY_NAME="WakeSamurai"
+CODESIGN_IDENTITY="${CODESIGN_IDENTITY:--}"
 DIST_DIR="$ROOT_DIR/dist"
 APP_DIR="$DIST_DIR/$APP_NAME.app"
 DMG_ROOT="$DIST_DIR/dmg-root"
@@ -26,7 +27,7 @@ cp "Resources/WakeSamurai.icns" "$RESOURCES_DIR/WakeSamurai.icns"
 cp "Resources/AppIconSource.png" "$RESOURCES_DIR/AppIconSource.png"
 cp "Resources/StatusBarIconTemplate.png" "$RESOURCES_DIR/StatusBarIconTemplate.png"
 
-codesign --force --deep --sign - "$APP_DIR"
+codesign --force --deep --sign "$CODESIGN_IDENTITY" "$APP_DIR"
 
 echo "Created $APP_DIR"
 

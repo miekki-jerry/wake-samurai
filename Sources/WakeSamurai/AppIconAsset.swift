@@ -18,9 +18,10 @@ enum AppIconAsset {
     }
 
     static func statusBarImage() -> NSImage {
-        let size = NSSize(width: 18, height: 18)
+        let size = NSSize(width: 20, height: 18)
 
-        if let image = NSImage(systemSymbolName: "figure.fencing", accessibilityDescription: "Wake Samurai") {
+        if let url = Bundle.main.url(forResource: "StatusBarIconTemplate", withExtension: "png"),
+           let image = NSImage(contentsOf: url) {
             image.size = size
             image.isTemplate = true
             return image
