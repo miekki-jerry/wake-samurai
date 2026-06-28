@@ -60,6 +60,12 @@ Build a release app bundle and DMG:
 ./scripts/package.sh
 ```
 
+Regenerate the app icon:
+
+```bash
+./scripts/generate-icon.swift
+```
+
 ## Detection Model
 
 Wake Samurai intentionally starts simple. It scans the local process table and matches supported provider names:

@@ -4,4 +4,5 @@ DerivedData/
 dist/
 *.dmg
 *.xcarchive
+Resources/*.iconset/
 .DS_Store

@@ -14,11 +14,16 @@ cd "$ROOT_DIR"
 
 swift build -c release --arch arm64
 
+if [[ ! -f "$ROOT_DIR/Resources/WakeSamurai.icns" ]]; then
+  "$ROOT_DIR/scripts/generate-icon.swift"
+fi
+
 rm -rf "$APP_DIR"
 mkdir -p "$MACOS_DIR" "$RESOURCES_DIR"
 
 cp ".build/arm64-apple-macosx/release/$BINARY_NAME" "$MACOS_DIR/$BINARY_NAME"
 cp "Info.plist" "$CONTENTS_DIR/Info.plist"
+cp "Resources/WakeSamurai.icns" "$RESOURCES_DIR/WakeSamurai.icns"
 
 codesign --force --deep --sign - "$APP_DIR"
 
