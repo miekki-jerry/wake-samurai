@@ -30,19 +30,15 @@ struct StatusMenuView: View {
     }
 
     var body: some View {
-        ZStack {
-            CyberGrid()
-
-            VStack(alignment: .leading, spacing: 0) {
-                statusRow
-                Divider().overlay(Color.white.opacity(0.08))
-                controls
-                Divider().overlay(Color.white.opacity(0.08))
-                agents
-            }
-            .padding(.horizontal, 18)
-            .padding(.vertical, 16)
+        VStack(alignment: .leading, spacing: 0) {
+            statusRow
+            Divider().overlay(Color.white.opacity(0.08))
+            controls
+            Divider().overlay(Color.white.opacity(0.08))
+            agents
         }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 16)
         .frame(width: 390, height: 250)
         .background(
             RoundedRectangle(cornerRadius: 14, style: .continuous)
@@ -184,31 +180,6 @@ private struct AgentChip: View {
             RoundedRectangle(cornerRadius: 7, style: .continuous)
                 .stroke(isActive ? CyberColor.yellow.opacity(0.55) : Color.white.opacity(0.14), lineWidth: 1)
         )
-    }
-}
-
-private struct CyberGrid: View {
-    var body: some View {
-        GeometryReader { proxy in
-            Path { path in
-                let spacing: CGFloat = 52
-                var x: CGFloat = 0
-                while x <= proxy.size.width {
-                    path.move(to: CGPoint(x: x, y: 0))
-                    path.addLine(to: CGPoint(x: x, y: proxy.size.height))
-                    x += spacing
-                }
-
-                var y: CGFloat = 0
-                while y <= proxy.size.height {
-                    path.move(to: CGPoint(x: 0, y: y))
-                    path.addLine(to: CGPoint(x: proxy.size.width, y: y))
-                    y += spacing
-                }
-            }
-            .stroke(CyberColor.cyan.opacity(0.055), lineWidth: 1)
-        }
-        .allowsHitTesting(false)
     }
 }
 
