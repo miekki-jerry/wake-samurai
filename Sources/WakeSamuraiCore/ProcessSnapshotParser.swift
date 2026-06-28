@@ -21,21 +21,47 @@ public enum ProcessSnapshotParser {
         let arguments = parts.count == 3 ? String(parts[2]) : ""
         let searchable = "\(command) \(arguments)".lowercased()
 
-        guard let provider = matchedProvider(in: searchable) else {
+        guard let provider = matchedProvider(command: command, arguments: arguments, searchable: searchable) else {
             return nil
         }
 
         return DetectedAgent(id: pid, provider: provider, command: lastPathComponent(command), arguments: arguments)
     }
 
-    private static func matchedProvider(in searchable: String) -> AgentProvider? {
-        AgentProvider.allCases
+    private static func matchedProvider(command: String, arguments: String, searchable: String) -> AgentProvider? {
+        if isJetBrainsAppProcess(command: command, arguments: arguments) {
+            return .jetBrainsAI
+        }
+
+        return AgentProvider.allCases
+            .filter { $0 != .jetBrainsAI }
             .flatMap { provider in
                 provider.matchTerms.map { (provider: provider, term: $0) }
             }
             .sorted { $0.term.count > $1.term.count }
             .first { containsMatchTerm(searchable, term: $0.term) }?
             .provider
+    }
+
+    private static func isJetBrainsAppProcess(command: String, arguments: String) -> Bool {
+        let searchable = "\(command) \(arguments)".lowercased()
+        let appBundlePaths = [
+            "/applications/intellij idea.app/contents/macos/",
+            "/applications/webstorm.app/contents/macos/",
+            "/applications/pycharm.app/contents/macos/",
+            "/applications/goland.app/contents/macos/",
+            "/applications/rubymine.app/contents/macos/",
+            "/applications/rider.app/contents/macos/",
+            "/applications/clion.app/contents/macos/",
+            "/applications/phpstorm.app/contents/macos/",
+            "/applications/datagrip.app/contents/macos/",
+            "/applications/dataspell.app/contents/macos/",
+            "/applications/aqua.app/contents/macos/",
+            "/applications/fleet.app/contents/macos/",
+            "/applications/jetbrains toolbox.app/contents/macos/",
+        ]
+
+        return appBundlePaths.contains { searchable.contains($0) }
     }
 
     private static func containsMatchTerm(_ searchable: String, term: String) -> Bool {

@@ -106,6 +106,17 @@ import Testing
     #expect(agents.isEmpty)
 }
 
+@Test func ignoresJetBrainsTextInShellCommands() {
+    let output = """
+      610 /bin/zsh /bin/zsh -lc ps ax | rg -i 'jetbrains|intellij|aqua'
+      611 /opt/homebrew/bin/rg rg -i jetbrains
+    """
+
+    let agents = ProcessSnapshotParser.detectedAgents(from: output, currentProcessID: 999)
+
+    #expect(agents.isEmpty)
+}
+
 @Test func detectsJetBrainsAppsFromAppBundlePaths() {
     let output = """
       701 /Applications/Aqua.app/Contents/MacOS/aqua /Applications/Aqua.app/Contents/MacOS/aqua

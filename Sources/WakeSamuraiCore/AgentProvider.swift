@@ -162,24 +162,7 @@ public enum AgentProvider: String, CaseIterable, Codable, Sendable {
         case .synthetic:
             ["synthetic"]
         case .jetBrainsAI:
-            [
-                "jetbrains",
-                "intellij idea.app",
-                "webstorm.app",
-                "pycharm.app",
-                "goland.app",
-                "rubymine.app",
-                "rider.app",
-                "clion.app",
-                "phpstorm.app",
-                "datagrip.app",
-                "dataspell.app",
-                "aqua.app",
-                "fleet.app",
-                "jetbrains toolbox",
-                "jetbrains-ai",
-                "jetbrains ai",
-            ]
+            []
         case .warp:
             ["warp"]
         case .elevenLabs:
