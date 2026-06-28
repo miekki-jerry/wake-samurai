@@ -164,18 +164,21 @@ public enum AgentProvider: String, CaseIterable, Codable, Sendable {
         case .jetBrainsAI:
             [
                 "jetbrains",
-                "idea",
-                "webstorm",
-                "pycharm",
-                "goland",
-                "rubymine",
-                "rider",
-                "clion",
-                "phpstorm",
-                "datagrip",
-                "dataspell",
-                "aqua",
-                "fleet",
+                "intellij idea.app",
+                "webstorm.app",
+                "pycharm.app",
+                "goland.app",
+                "rubymine.app",
+                "rider.app",
+                "clion.app",
+                "phpstorm.app",
+                "datagrip.app",
+                "dataspell.app",
+                "aqua.app",
+                "fleet.app",
+                "jetbrains toolbox",
+                "jetbrains-ai",
+                "jetbrains ai",
             ]
         case .warp:
             ["warp"]

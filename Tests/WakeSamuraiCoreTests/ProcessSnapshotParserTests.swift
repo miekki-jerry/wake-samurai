@@ -95,3 +95,24 @@ import Testing
 
     #expect(agents.map { $0.provider } == [.zed])
 }
+
+@Test func ignoresSystemAquaProcess() {
+    let output = """
+      601 /usr/libexec/UserEventAgent /usr/libexec/UserEventAgent (Aqua)
+    """
+
+    let agents = ProcessSnapshotParser.detectedAgents(from: output, currentProcessID: 999)
+
+    #expect(agents.isEmpty)
+}
+
+@Test func detectsJetBrainsAppsFromAppBundlePaths() {
+    let output = """
+      701 /Applications/Aqua.app/Contents/MacOS/aqua /Applications/Aqua.app/Contents/MacOS/aqua
+      702 /Applications/IntelliJ IDEA.app/Contents/MacOS/idea /Applications/IntelliJ IDEA.app/Contents/MacOS/idea
+    """
+
+    let agents = ProcessSnapshotParser.detectedAgents(from: output, currentProcessID: 999)
+
+    #expect(agents.map { $0.provider } == [.jetBrainsAI, .jetBrainsAI])
+}
