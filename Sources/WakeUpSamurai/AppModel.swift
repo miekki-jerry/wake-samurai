@@ -21,14 +21,18 @@ final class AppModel: ObservableObject {
     private let sleepAssertion = SleepAssertionController()
     private var timer: Timer?
 
+    var codingAgents: [DetectedAgent] {
+        detectedAgents.filter(\.isCoding)
+    }
+
     var isKeepingAwake: Bool {
-        isProtectionEnabled && !detectedAgents.isEmpty && sleepAssertion.isActive
+        isProtectionEnabled && !codingAgents.isEmpty && sleepAssertion.isActive
     }
 
     var statusTitle: String {
         if isKeepingAwake {
             "Keeping Mac awake"
-        } else if detectedAgents.isEmpty {
+        } else if codingAgents.isEmpty {
             "No active agents"
         } else {
             "Protection paused"
@@ -57,7 +61,7 @@ final class AppModel: ObservableObject {
 
     private func updateSleepAssertion() {
         sleepAssertion.setActive(
-            isProtectionEnabled && !detectedAgents.isEmpty,
+            isProtectionEnabled && !codingAgents.isEmpty,
             reason: "WakeUp Samurai detected an active AI coding agent."
         )
     }

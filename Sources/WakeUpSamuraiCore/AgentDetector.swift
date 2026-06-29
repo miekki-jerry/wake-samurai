@@ -72,7 +72,8 @@ public struct AgentDetector: Sendable {
         let snapshot = try processListing.processSnapshot()
         let agents = ProcessSnapshotParser.detectedAgents(from: snapshot)
         return AgentProvider.allCases.compactMap { provider in
-            agents.first { $0.provider == provider }
+            let providerAgents = agents.filter { $0.provider == provider }
+            return providerAgents.first(where: \.isCoding) ?? providerAgents.first
         }
     }
 }

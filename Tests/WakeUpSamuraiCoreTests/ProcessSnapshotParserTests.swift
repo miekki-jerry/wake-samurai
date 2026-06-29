@@ -1,6 +1,14 @@
 import Testing
 @testable import WakeUpSamuraiCore
 
+private struct StubProcessListing: ProcessListing {
+    let output: String
+
+    func processSnapshot() throws -> String {
+        output
+    }
+}
+
 @Test func detectsCodexFromCommandArguments() {
     let output = """
       101 /opt/homebrew/bin/node node /opt/homebrew/bin/codex --ask-for-approval never
@@ -12,6 +20,7 @@ import Testing
     #expect(agents == [
         DetectedAgent(id: 101, provider: .codex, command: "node", arguments: "node /opt/homebrew/bin/codex --ask-for-approval never")
     ])
+    #expect(agents.first?.isCoding == true)
 }
 
 @Test func detectsClaudeFromBinaryName() {
@@ -25,7 +34,7 @@ import Testing
     #expect(agents.first?.id == 201)
 }
 
-@Test func detectsCodexDesktopAppFromProcessArguments() {
+@Test func detectsIdleCodexDesktopAppWithoutCoding() {
     let output = """
       55508 /Applications/Co /Applications/Codex.app/Contents/MacOS/Codex
       55875 /Applications/Co /Applications/Codex.app/Contents/Resources/codex app-server --analytics-default-enabled
@@ -34,6 +43,7 @@ import Testing
     let agents = ProcessSnapshotParser.detectedAgents(from: output, currentProcessID: 999)
 
     #expect(agents.map { $0.provider } == [.codex, .codex])
+    #expect(agents.allSatisfy { !$0.isCoding })
 }
 
 @Test func ignoresCurrentProcessAndWakeUpSamuraiItself() {
@@ -80,6 +90,45 @@ import Testing
 
     #expect(agents == [
         DetectedAgent(id: 410, provider: .kimi, command: "Kimi", arguments: "Code Kimi Code")
+    ])
+    #expect(agents.first?.isCoding == true)
+}
+
+@Test func detectsKimiDesktopAppWithoutCoding() {
+    let output = """
+      411 /Applications/Ki /Applications/Kimi Code.app/Contents/MacOS/Kimi Code
+    """
+
+    let agents = ProcessSnapshotParser.detectedAgents(from: output, currentProcessID: 999)
+
+    #expect(agents.map { $0.provider } == [.kimi])
+    #expect(agents.allSatisfy { !$0.isCoding })
+}
+
+@Test func marksMultipleCliAgentsAsCoding() {
+    let output = """
+      421 /opt/homebrew/bin/codex codex
+      422 /Users/me/.local/bin/kimi kimi
+      423 /Applications/Co /Applications/Codex.app/Contents/MacOS/Codex
+    """
+
+    let agents = ProcessSnapshotParser.detectedAgents(from: output, currentProcessID: 999)
+
+    #expect(agents.filter(\.isCoding).map { $0.provider } == [.codex, .kimi])
+    #expect(agents.filter { !$0.isCoding }.map { $0.provider } == [.codex])
+}
+
+@Test func detectorPrefersCodingProcessForSameProvider() throws {
+    let output = """
+      431 /Applications/Co /Applications/Codex.app/Contents/MacOS/Codex
+      432 /opt/homebrew/bin/codex codex
+    """
+    let detector = AgentDetector(processListing: StubProcessListing(output: output))
+
+    let agents = try detector.detectedAgents()
+
+    #expect(agents == [
+        DetectedAgent(id: 432, provider: .codex, command: "codex", arguments: "codex")
     ])
 }
 

@@ -5,21 +5,29 @@ import SwiftUI
 struct StatusMenuView: View {
     @ObservedObject var model: AppModel
 
-    private var activeAgent: DetectedAgent? {
-        model.detectedAgents.first
+    private var codingProviders: [AgentProvider] {
+        providers(from: model.codingAgents)
     }
 
     private var statusText: String {
-        guard let activeAgent else {
+        if codingProviders.isEmpty {
             return "No agent coding"
         }
 
-        return "\(activeAgent.provider.displayName) is coding"
+        if codingProviders.count == 1, let provider = codingProviders.first {
+            return "\(provider.displayName) is coding"
+        }
+
+        return "\(codingProviders.count) agents coding"
     }
 
     private var detectedProviders: [AgentProvider] {
+        providers(from: model.detectedAgents)
+    }
+
+    private func providers(from agents: [DetectedAgent]) -> [AgentProvider] {
         var seen: Set<AgentProvider> = []
-        return model.detectedAgents.compactMap { agent in
+        return agents.compactMap { agent in
             guard !seen.contains(agent.provider) else {
                 return nil
             }

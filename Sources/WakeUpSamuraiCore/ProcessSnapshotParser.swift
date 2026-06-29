@@ -23,7 +23,13 @@ public enum ProcessSnapshotParser {
             return nil
         }
 
-        return DetectedAgent(id: pid, provider: provider, command: lastPathComponent(command), arguments: arguments)
+        return DetectedAgent(
+            id: pid,
+            provider: provider,
+            command: lastPathComponent(command),
+            arguments: arguments,
+            isCoding: isCodingProcess(command: command, arguments: arguments)
+        )
     }
 
     private static func matchedProvider(command: String, arguments: String) -> AgentProvider? {
@@ -136,6 +142,15 @@ public enum ProcessSnapshotParser {
         }
 
         return tokens[0]
+    }
+
+    private static func isCodingProcess(command: String, arguments: String) -> Bool {
+        !isAppBundleProcess(command: command, arguments: arguments)
+    }
+
+    private static func isAppBundleProcess(command: String, arguments: String) -> Bool {
+        let searchable = "\(command) \(arguments)".lowercased()
+        return searchable.contains(".app/contents/")
     }
 
     private static func containsMatchTerm(_ searchable: String, term: String) -> Bool {
