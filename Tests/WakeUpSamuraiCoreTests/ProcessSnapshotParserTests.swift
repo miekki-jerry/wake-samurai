@@ -145,6 +145,17 @@ private struct StubProcessListing: ProcessListing {
     #expect(agents.allSatisfy { !$0.isCoding })
 }
 
+@Test func detectsCursorExtensionProcessesWithoutCoding() {
+    let output = """
+      449 0.0 /Users/piter/.cu /Users/piter/.cursor/extensions/sonarsource.sonarlint-vscode/server/java -jar sonarlint-ls.jar
+    """
+
+    let agents = ProcessSnapshotParser.detectedAgents(from: output, currentProcessID: 999)
+
+    #expect(agents.map { $0.provider } == [.cursor])
+    #expect(agents.allSatisfy { !$0.isCoding })
+}
+
 @Test func ignoresSystemCursorUIViewService() {
     let output = """
       445 0.0 /System/Library/ /System/Library/PrivateFrameworks/TextInputUIMacHelper.framework/Versions/A/XPCServices/CursorUIViewService.xpc/Contents/MacOS/CursorUIViewService

@@ -185,6 +185,7 @@ public enum ProcessSnapshotParser {
         let searchable = "\(command) \(arguments)".lowercased()
         return searchable.contains(".app/contents/")
             || searchable.contains("cursor helper")
+            || searchable.contains("/.cursor/extensions/")
             || searchable.contains(" app-server")
     }
 

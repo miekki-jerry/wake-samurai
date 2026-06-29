@@ -55,38 +55,33 @@ struct StatusMenuView: View {
     }
 
     private var statusRow: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(alignment: .top, spacing: 12) {
-                VStack(spacing: 11) {
-                    ForEach(statusLines, id: \.self) { _ in
+        HStack(alignment: .top, spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+                ForEach(statusLines, id: \.self) { line in
+                    HStack(spacing: 12) {
                         PulsingStatusDot(isActive: model.isKeepingAwake)
-                    }
-                }
-                .padding(.top, 4)
 
-                VStack(alignment: .leading, spacing: 4) {
-                    ForEach(statusLines, id: \.self) { line in
                         Text(line)
                             .font(.system(size: 17, weight: .semibold, design: .monospaced))
                             .foregroundStyle(.white.opacity(0.92))
                             .lineLimit(1)
                     }
                 }
-
-                Spacer()
-
-                Button {
-                    NSApplication.shared.terminate(nil)
-                } label: {
-                    Image(systemName: "power")
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundStyle(model.isKeepingAwake ? CyberColor.yellow : .secondary)
-                        .frame(width: 24, height: 24)
-                }
-                .buttonStyle(.plain)
-                .help("Quit WakeUp Samurai")
-                .keyboardShortcut("q")
             }
+
+            Spacer()
+
+            Button {
+                NSApplication.shared.terminate(nil)
+            } label: {
+                Image(systemName: "power")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(model.isKeepingAwake ? CyberColor.yellow : .secondary)
+                    .frame(width: 24, height: 24)
+            }
+            .buttonStyle(.plain)
+            .help("Quit WakeUp Samurai")
+            .keyboardShortcut("q")
         }
         .padding(.bottom, 16)
     }
