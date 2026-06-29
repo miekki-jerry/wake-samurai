@@ -145,12 +145,14 @@ public enum ProcessSnapshotParser {
     }
 
     private static func isCodingProcess(command: String, arguments: String) -> Bool {
-        !isAppBundleProcess(command: command, arguments: arguments)
+        !isDesktopRuntimeProcess(command: command, arguments: arguments)
     }
 
-    private static func isAppBundleProcess(command: String, arguments: String) -> Bool {
+    private static func isDesktopRuntimeProcess(command: String, arguments: String) -> Bool {
         let searchable = "\(command) \(arguments)".lowercased()
         return searchable.contains(".app/contents/")
+            || searchable.contains("cursor helper")
+            || searchable.contains(" app-server")
     }
 
     private static func containsMatchTerm(_ searchable: String, term: String) -> Bool {

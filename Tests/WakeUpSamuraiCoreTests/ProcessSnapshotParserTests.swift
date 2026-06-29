@@ -105,6 +105,31 @@ private struct StubProcessListing: ProcessListing {
     #expect(agents.allSatisfy { !$0.isCoding })
 }
 
+@Test func detectsCursorDesktopHelpersWithoutCoding() {
+    let output = """
+      441 /Applications/Cu /Applications/Cursor.app/Contents/MacOS/Cursor
+      442 Cursor Helper: m Cursor Helper: mcp-process
+      443 Cursor Helper: t Cursor Helper: terminal pty-host
+      444 Cursor Helper (P Cursor Helper (Plugin): extension-host (agent-exec) yuni [2-8]
+    """
+
+    let agents = ProcessSnapshotParser.detectedAgents(from: output, currentProcessID: 999)
+
+    #expect(agents.map { $0.provider } == [.cursor, .cursor, .cursor, .cursor])
+    #expect(agents.allSatisfy { !$0.isCoding })
+}
+
+@Test func detectsCodexAppServerWithoutCoding() {
+    let output = """
+      451 /Users/piter/.cursor/extensions/openai.chatgpt/bin/codex codex app-server --analytics-default-enabled
+    """
+
+    let agents = ProcessSnapshotParser.detectedAgents(from: output, currentProcessID: 999)
+
+    #expect(agents.map { $0.provider } == [.cursor])
+    #expect(agents.allSatisfy { !$0.isCoding })
+}
+
 @Test func marksMultipleCliAgentsAsCoding() {
     let output = """
       421 /opt/homebrew/bin/codex codex
